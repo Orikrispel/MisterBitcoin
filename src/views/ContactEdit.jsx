@@ -1,34 +1,36 @@
-import React, { Component } from 'react'
 import { contactService } from '../services/contact.service'
+import { useEffect, useState } from 'react'
+import { useNavigate, useParams } from 'react-router-dom'
 
-export class ContactEdit extends Component {
-  state = {
-    contact: contactService.getEmptyContact(),
-  }
+export function ContactEdit() {
+  const navigate = useNavigate()
+  const [contact, setContact] = useState(contactService.getEmptyContact())
+  const params = useParams()
 
-  async componentDidMount() {
-    const contactId = this.props.match.params.id
-    if (contactId) {
-      try {
-        const contact = await contactService.getContactById(contactId)
-        this.setState({ contact })
-      } catch (error) {
-        console.log('error:', error)
-      }
-    }
-  }
+  useEffect(() => {
+    loadContact()
+  }, [params.id])
 
-  onSave = async (ev) => {
-    ev.preventDefault()
+  async function loadContact() {
     try {
-      await contactService.saveContact({ ...this.state.contact })
-      this.props.history.goBack()
+      const contact = await contactService.getContactById(params.id)
+      setContact(contact)
     } catch (error) {
       console.log('error:', error)
     }
   }
 
-  handleChange = ({ target }) => {
+  async function onSave(ev) {
+    ev.preventDefault()
+    try {
+      await contactService.saveContact(contact)
+      navigate(-1)
+    } catch (error) {
+      console.log('error:', error)
+    }
+  }
+
+  function handleChange({ target }) {
     const field = target.name
     let value = target.value
 
@@ -41,25 +43,21 @@ export class ContactEdit extends Component {
         value = target.checked
         break;
     }
-    this.setState(({ contact }) => ({ contact: { ...contact, [field]: value } }))
+    setContact({ ...contact, [field]: value })
   }
 
-  render() {
-    const { contact } = this.state
-
-    return (
-      <section className='contact-edit'>
-        <h1>{contact._id ? 'Edit' : 'Add'} contact</h1>
-        <form onSubmit={this.onSave}>
-          <label htmlFor='name'>Name</label>
-          <input name="name" id="name" onChange={this.handleChange} type="text" defaultValue={contact?.name || ''} />
-          <label htmlFor='phone'>Phone</label>
-          <input name="phone" id="phone" onChange={this.handleChange} type="text" defaultValue={contact?.phone || ''} />
-          <label htmlFor='email'>Email</label>
-          <input name="email" id="email" onChange={this.handleChange} type="text" defaultValue={contact?.email || ''} />
-          <button type='submit'>save</button>
-        </form>
-      </section>
-    )
-  }
+  return (
+    <section className='contact-edit'>
+      <h1>{contact._id ? 'Edit' : 'Add'} contact</h1>
+      <form onSubmit={onSave}>
+        <label htmlFor='name'>Name</label>
+        <input name="name" id="name" onChange={handleChange} type="text" defaultValue={contact?.name || ''} />
+        <label htmlFor='phone'>Phone</label>
+        <input name="phone" id="phone" onChange={handleChange} type="text" defaultValue={contact?.phone || ''} />
+        <label htmlFor='email'>Email</label>
+        <input name="email" id="email" onChange={handleChange} type="text" defaultValue={contact?.email || ''} />
+        <button type='submit'>save</button>
+      </form>
+    </section>
+  )
 }

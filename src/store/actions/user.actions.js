@@ -1,23 +1,11 @@
 import { userService } from '../../services/user.service'
 
-export function spendBalance(amount) {
-  console.log('amount:', amount)
-  return async (dispatch, getState) => {
-    try {
-      const user = userService.getLoggedinUser()
-      user.coins = user.coins - amount
-      userService.update(user)
-      dispatch({ type: 'SPEND_BALANCE', amount })
-    } catch (error) {
-      console.log('error:', error)
-    }
-  }
-}
-
 export function transferCoins(amount, contact) {
-  return async (dispatch, getState) => {
+  console.log('hello')
+  return async (dispatch) => {
     try {
-      const updatedUser = userService.transferCoins(amount, contact)
+      const updatedUser = userService.addMove(amount, contact)
+      console.log('updatedUser:', updatedUser)
       dispatch({ type: 'SET_USER', user: updatedUser })
     } catch (error) {
       console.log('error:', error)

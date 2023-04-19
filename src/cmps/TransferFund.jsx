@@ -14,11 +14,9 @@ export function TransferFund(props) {
   return (
     <section className='transfer-fund'>
       <p>Transfer coins to {contact.name}</p>
-      <form onSubmit={() => onTransferCoins(amount, contact)}>
-        <label htmlFor="amount">Amount:</label>
-        <input type="number" name="amount" />
-        <button type='submit'>Transfer</button>
-      </form>
+      <label htmlFor="amount">Amount:</label>
+      <input onChange={onSetAmount} type="number" name="amount" />
+      <button onClick={() => onTransferCoins(amount, contact)}>Transfer</button>
     </section>
   )
 

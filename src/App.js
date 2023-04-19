@@ -1,4 +1,4 @@
-import { Route, HashRouter as Router, Switch } from 'react-router-dom';
+import { Route, HashRouter as Router, Routes, Switch } from 'react-router-dom';
 import './assets/scss/global.scss'
 import { AppHeader } from './cmps/AppHeader'
 import { HomePage } from './views/HomePage'
@@ -19,14 +19,14 @@ function App() {
         <AppHeader />
 
         <main className="container">
-          <Switch>
-            <Route path="/contact/edit/:id?" component={ContactEdit} />
-            <Route path="/contact/:id" component={ContactDetails} />
-            <Route path="/contact" component={ContactIndex} />
-            <Route path="/statistic" component={StatisticPage} />
-            <Route path="/signup" component={Signup} />
-            <Route path="/" component={HomePage} />
-          </Switch>
+          <Routes>
+            <Route path="/" element={<HomePage />} />
+            <Route path="/contact" element={<ContactIndex />} />
+            <Route path="/contact/:id" element={<ContactDetails />} />
+            <Route path="/contact/edit/:id?" element={<ContactEdit />} />
+            <Route path="/statistic" element={<StatisticPage />} />
+            <Route path="/signup" element={<Signup />} />
+          </Routes>
         </main>
 
         <footer>

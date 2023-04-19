@@ -1,61 +1,60 @@
-import React, { Component } from 'react'
-import { Link } from 'react-router-dom'
-import { connect } from 'react-redux'
+import React, { useEffect, useState } from 'react'
+import { useDispatch, useSelector } from "react-redux";
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { TransferFund } from '../cmps/TransferFund'
 import { contactService } from '../services/contact.service'
-import { spendBalance, transferCoins } from '../store/actions/user.actions'
-import { userService } from '../services/user.service'
+import { transferCoins } from '../store/actions/user.actions'
+
+export function ContactDetails() {
+  const [contact, setContact] = useState(null)
+  const params = useParams()
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
 
-export class _ContactDetails extends Component {
-  state = {
-    contact: null,
-    user: userService.getLoggedinUser()
+  const user = useSelector((storeState) => {
+    return storeState.userModule.loggedInUser
+  })
+
+  useEffect(() => {
+    loadContact()
+  }, [params.id])
+
+  async function loadContact() {
+    try {
+      const contact = await contactService.getContactById(params.id)
+      setContact(contact)
+    } catch (error) {
+      console.log('error:', error)
+    }
   }
 
-  async componentDidMount() {
-    const contact = await contactService.getContactById(this.props.match.params.id)
-    this.setState({ contact })
+  function onTransferCoins(amount, contact) {
+    dispatch(transferCoins(amount, contact))
   }
 
-  onTransferCoins = (amount, contact) => {
-    this.props.transferCoins(amount, contact)
+  function onBack() {
+    navigate(-1)
   }
 
-  onBack = () => {
-    this.props.history.goBack()
-  }
-
-  render() {
-    const { contact, user } = this.state
-    if (!contact) return <div>Loading...</div>
-    return (
-      <section className='contact-details'>
-        <img src={`https://robohash.org/${contact._id}?set=set5`} />
-        <article>
-          <h2>{contact.name}</h2>
-          <p><strong>Email:</strong> {contact.email}</p>
-          <p><strong>Phone:</strong> {contact.phone}</p>
-          <section className='btn-group'>
-            <button onClick={this.onBack} >Back</button>
-            <Link to={`/contact/edit/${contact._id}`}><button>Edit</button></Link>
-          </section>
-          <TransferFund
-            contact={contact}
-            onTransferCoins={this.onTransferCoins}
-            maxCoins={user.coins}
-          />
-        </article>
-      </section>
-    )
-  }
+  if (!contact) return <div>Loading...</div>
+  return (
+    <section className='contact-details'>
+      <img src={`https://robohash.org/${contact._id}?set=set5`} />
+      <article>
+        <h2>{contact.name}</h2>
+        <p><strong>Email:</strong> {contact.email}</p>
+        <p><strong>Phone:</strong> {contact.phone}</p>
+        <section className='btn-group'>
+          <button onClick={onBack} >Back</button>
+          <Link to={`/contact/edit/${contact._id}`}><button>Edit</button></Link>
+        </section>
+        <TransferFund
+          contact={contact}
+          onTransferCoins={onTransferCoins}
+          maxCoins={user.coins}
+        />
+      </article>
+    </section>
+  )
 }
-
-
-const mapStateToProps = (state) => ({
-  user: state.userModule.loggedInUser
-})
-
-const mapDispatchToProps = { spendBalance, transferCoins }
-
-export const ContactDetails = connect(mapStateToProps, mapDispatchToProps)(_ContactDetails)

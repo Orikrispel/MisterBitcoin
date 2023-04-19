@@ -1,50 +1,44 @@
-import React, { Component } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Chart } from '../cmps/Chart'
 import { bitcoinService } from '../services/bitcoin.service'
 
-export class StatisticPage extends Component {
+export function StatisticPage() {
+  const [marketPrice, setMarketPrice] = useState(null)
+  const [confirmedTransactions, setConfirmedTransactions] = useState(null)
 
-  state = {
-    marketPrice: null,
-    confirmedTransactions: null,
-  }
+  useEffect(() => {
+    setMarketPriceValues()
+    setConfirmedTransactionsValues()
+  }, [])
 
-  componentDidMount() {
-    this.setMarketPrice()
-    this.setConfirmedTransactions()
-  }
-
-  async setMarketPrice() {
+  async function setMarketPriceValues() {
     try {
       let marketPrice = await bitcoinService.getMarketPrice()
-      this.setState({ marketPrice })
+      setMarketPrice(marketPrice)
     } catch (err) {
       console.error('error from getting market price:', err)
       return null
     }
   }
 
-  async setConfirmedTransactions() {
+  async function setConfirmedTransactionsValues() {
     try {
       let confirmedTransactions = await bitcoinService.getConfirmedTransactions()
-      this.setState({ confirmedTransactions })
+      setConfirmedTransactions(confirmedTransactions)
     } catch (err) {
       console.error('error from getting market price:', err)
       return null
     }
   }
 
-  render() {
-    const { marketPrice, confirmedTransactions } = this.state
-    return (
-      <section className='statistic'>
-        {marketPrice && (
-          <Chart chartData={marketPrice} />
-        )}
-        {confirmedTransactions && (
-          <Chart chartData={confirmedTransactions} />
-        )}
-      </section>
-    )
-  }
+  return (
+    <section className='statistic'>
+      {marketPrice && (
+        <Chart chartData={marketPrice} />
+      )}
+      {confirmedTransactions && (
+        <Chart chartData={confirmedTransactions} />
+      )}
+    </section>
+  )
 }

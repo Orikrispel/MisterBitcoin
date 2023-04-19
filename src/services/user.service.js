@@ -35,19 +35,26 @@ function signup(name) {
   login(name)
 }
 
-function addMove(contact, amount) {
+
+
+function addMove(amount, contact) {
   let user = getLoggedinUser()
+
   const userNewAmount = user.coins - amount
-  if (userNewAmount < 0) return
+  if (userNewAmount < 0) {
+    console.log('Not enough coins!')
+    return
+  }
+  user.coins = userNewAmount
   const move = _createMove(contact, amount)
   user.moves.push(move)
-  user.coins = userNewAmount
   storageService.save(USER_KEY, user)
+  return user
 }
 
 function getEmptyUser(name = '') {
   return {
-    name: '',
+    name,
     coins: 100,
     moves: []
   }
