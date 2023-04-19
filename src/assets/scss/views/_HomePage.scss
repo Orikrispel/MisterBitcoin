@@ -51,7 +51,7 @@
   }
 
   /* Current User Details Section */
-  section:last-of-type {
+  section.reasons-list {
     padding: 50px;
     display: flex;
     flex-direction: column;
@@ -91,6 +91,10 @@
 
       }
     }
+  }
+
+  .move-list {
+    padding: 20px;
   }
 
 }

@@ -1,14 +1,22 @@
 import React, { Component } from 'react'
 import { userService } from '../services/user.service'
 import { useNavigate } from 'react-router-dom'
+import { useDispatch } from 'react-redux'
+import { signUp } from '../store/actions/user.actions'
 
 export function Signup() {
   const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   function OnSignup(ev) {
     ev.preventDefault()
-    userService.signup(ev.target[0].value)
-    navigate('/')
+    const name = ev.target[0].value
+    dispatch(signUp(name))
+    onBack()
+  }
+
+  function onBack() {
+    navigate(-1)
   }
 
   return (

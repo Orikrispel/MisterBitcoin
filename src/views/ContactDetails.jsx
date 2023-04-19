@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import { TransferFund } from '../cmps/TransferFund'
+import { MovesList } from '../cmps/MovesList'
 import { contactService } from '../services/contact.service'
 import { transferCoins } from '../store/actions/user.actions'
 
@@ -54,6 +55,11 @@ export function ContactDetails() {
           onTransferCoins={onTransferCoins}
           maxCoins={user.coins}
         />
+        {user.moves &&
+          <MovesList
+            userMoves={user.moves.filter(move => move.toId === params.id)}
+            title='Last transfers:' />
+        }
       </article>
     </section>
   )
