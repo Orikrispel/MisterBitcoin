@@ -1,0 +1,50 @@
+.contact-preview {
+  background-color: #fff;
+  border-radius: 4px;
+  background-repeat: no-repeat;
+  background-position: top;
+  background-size: contain;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  cursor: pointer;
+  border-top: 6px solid #2ecc71;
+
+  .info {
+    background: linear-gradient(170deg, #ffffff 0%, transparent 50%);
+    padding: 10px;
+    flex-grow: 1;
+  }
+
+  .actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-basis: 25%;
+    padding: 10px;
+    background-color: #00000093;
+    backdrop-filter: blur(10px);
+    transform: translateY(100%);
+    transition: transform 0.2s;
+
+    a {
+      color: white;
+    }
+
+    button {
+      background-color: transparent;
+      border: none;
+      color: #fff;
+      transition: .1s ease-out;
+
+      &:Hover {
+        scale: 1.2;
+      }
+    }
+  }
+
+  &:hover .actions {
+    backdrop-filter: blur(10px);
+    transform: translateY(0);
+  }
+}

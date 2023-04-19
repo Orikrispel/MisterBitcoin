@@ -1,0 +1,51 @@
+.container {
+    max-width: $normal-breakpoint;
+    margin: 0 auto;
+    padding-left: 10px;
+    padding-right: 10px;
+    padding: 20px;
+
+
+    @include for-mobile-layout {
+        max-width: initial;
+    }
+
+    @include for-tablet-layout {
+        max-width: $mobile-breakpoint;
+    }
+
+    @include for-normal-layout {
+        max-width: $tablet-breakpoint;
+    }
+
+    @include for-wide-layout {
+        max-width: $normal-breakpoint;
+    }
+}
+
+// GRIDS
+.simple-cards-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-gap: 30px;
+}
+
+
+.main-app {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    background-image: url(https://thumbs.dreamstime.com/b/white-bitcoin-cryptocurrency-coin-against-grey-background-d-rendering-229824575.jpg);
+    background-size: cover;
+    background-attachment: fixed;
+
+    main {
+        flex-grow: 1;
+        width: 100%;
+    }
+
+    >footer {
+        background-color: #111;
+        color: white;
+    }
+}
