@@ -12,8 +12,6 @@ export function MovesList(props) {
     return `${formattedDate}`;
   }
 
-  console.log('props:', props)
-
   if (!props.userMoves.length) return
   return (
     < section className="move-list" >

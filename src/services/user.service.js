@@ -32,7 +32,7 @@ function getLoggedinUser() {
 function signup(name) {
   users.push(getEmptyUser(name))
   storageService.save(STORAGE_KEY, users)
-  login(name)
+  return login(name)
 }
 
 

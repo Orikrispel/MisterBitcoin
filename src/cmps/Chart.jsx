@@ -3,10 +3,6 @@ import { Line } from "react-chartjs-2"
 
 export class Chart extends Component {
 
-
-  componentDidMount() {
-    console.log('chartData ', this.props.chartData)
-  }
   render() {
     const { chartData } = this.props
     const dateLabels = [];

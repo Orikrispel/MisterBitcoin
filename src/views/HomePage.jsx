@@ -11,17 +11,17 @@ import { useState } from 'react'
 export function HomePage() {
 
   const [coinsRate, setCoinsRate] = useState(null)
-  const user = useSelector((storeState) => {
+  const loggedInUser = useSelector((storeState) => {
     return storeState.userModule.loggedInUser
   })
 
   useEffect(() => {
     loadCoinsRate()
-  }, [])
+  }, [loggedInUser])
 
   async function loadCoinsRate() {
     try {
-      const coinsRate = await bitcoinService.getRate(user.coins)
+      const coinsRate = await bitcoinService.getRate(loggedInUser.coins)
       setCoinsRate(coinsRate)
     } catch (error) {
       console.log('error:', error)
@@ -38,9 +38,8 @@ export function HomePage() {
       </section>
 
       <section>
-        <p><i className="fa-solid fa-user"></i>{user.name}</p>
-
-        <p> <i className="fa-solid fa-coins"></i> {user.coins} Coins</p>
+        <p><i className="fa-solid fa-user"></i>{loggedInUser.name}</p>
+        <p> <i className="fa-solid fa-coins"></i> {loggedInUser.coins} Coins</p>
         <p><i className="fa-brands fa-bitcoin"></i>{coinsRate || '(Loading...)'}  Bitcoins</p>
       </section>
 
@@ -54,9 +53,9 @@ export function HomePage() {
         </ul>
       </section>
 
-      {user.moves &&
+      {loggedInUser.moves &&
         <MovesList
-          userMoves={user.moves.slice(0, 3)}
+          userMoves={loggedInUser.moves.slice(0, 3)}
           title='Last 3 moves:'
         />}
     </div >

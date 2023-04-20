@@ -8,11 +8,15 @@ export function Signup() {
   const navigate = useNavigate()
   const dispatch = useDispatch()
 
-  function OnSignup(ev) {
+  async function OnSignup(ev) {
     ev.preventDefault()
     const name = ev.target[0].value
-    dispatch(signUp(name))
-    onBack()
+    try {
+      dispatch(signUp(name))
+      onBack()
+    } catch (error) {
+      console.log('error:', error)
+    }
   }
 
   function onBack() {
