@@ -15,7 +15,7 @@ export function TransferFund(props) {
     <section className='transfer-fund'>
       <p>Transfer coins to {contact.name}</p>
       <label htmlFor="amount">Amount:</label>
-      <input onChange={onSetAmount} type="number" name="amount" />
+      <input onChange={onSetAmount} min="0" max="100" type="number" name="amount" />
       <button onClick={() => onTransferCoins(amount, contact)}>Transfer</button>
     </section>
   )

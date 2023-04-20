@@ -11,6 +11,7 @@ export function Signup() {
   async function OnSignup(ev) {
     ev.preventDefault()
     const name = ev.target[0].value
+    if (!name) return
     try {
       dispatch(signUp(name))
       onBack()
@@ -28,7 +29,7 @@ export function Signup() {
       <i className="fa-brands fa-bitcoin fa-spin"></i>
       <h2>Please enter your name:</h2>
       <form onSubmit={OnSignup}>
-        <input type="text" name="name" id="name" placeholder='Your full name here'></input>
+        <input type="text" name="name" id="name" placeholder='Your full name here' required></input>
         <button type="submit">Sign up</button>
       </form>
     </section>
